@@ -31,7 +31,9 @@ ALLOWED_HOSTS = [
     'djangorpa.azurewebsites.net',
 ]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://djangorpa.azurewebsites.net',
+]
 # Application definition
 
 INSTALLED_APPS = [
