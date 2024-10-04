@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hello.views import hola_mundo, trigger_send_whatsapp_message
+from hello.views import get_qr_code, hola_mundo, trigger_send_whatsapp_message
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', hola_mundo, name='hola_mundo'),
     path('send-whatsapp/', trigger_send_whatsapp_message, name='send_whatsapp'),
+    path('get-qr-code/', get_qr_code, name='get_qr_code'),
 ]
