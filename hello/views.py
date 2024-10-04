@@ -86,8 +86,8 @@ def authenticate_and_send_message(page, phone_number, message):
         page.goto("https://web.whatsapp.com/")  # Reemplaza con la URL correcta
 
         # Esperar a que el div con la clase _aj-e esté presente
-        page.wait_for_selector("div._aj-e", timeout=60000)
-        time.sleep(2)
+        page.wait_for_selector("div._aj-e", timeout=10000)
+        time.sleep(8)
         # Buscar el span con role="button" y clase x1n68mz9 dentro del div con clase _aj-e
         span_selector = "span.x1n68mz9"
         span_element = page.query_selector(span_selector)
@@ -96,12 +96,15 @@ def authenticate_and_send_message(page, phone_number, message):
             print("Span encontrado")
             # Realizar una acción sobre el span, por ejemplo, hacer clic
             
-            time.sleep(3)
+            time.sleep(10)
              
-            page.wait_for_selector("span.x19co3pv", timeout=50000)
+            #
+            # Tomar una captura de pantalla después de la autenticación
+
             span_element_number = page.query_selector("span.x19co3pv")
+            page.wait_for_selector("span.x19co3pv")
             pan_text = span_element_number.text_content()
-            time.sleep(4)
+            time.sleep(10)
             print(pan_text)
 
             input_selector = 'input[dir="ltr"]'
