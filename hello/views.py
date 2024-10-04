@@ -43,8 +43,9 @@ def get_qr_code(request):
         except Exception as e:
             logger.error(f"Error al navegar a la URL de WhatsApp: {e}")
         finally:
-            browser.close()
-            logger.info("Cerrando el navegador")
+            if browser:
+                browser.close()
+                logger.info("Cerrando el navegador")
 
     return render(request, 'qr_code.html')
 
