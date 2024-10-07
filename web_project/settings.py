@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l0t8(sf8$r5wp_b@bk)uz-ld2ov@sq__j9uim4*z=9r_b7&4$4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -118,7 +118,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# En desarrollo, puedes agregar esto para asegurarte de que Django busque en la carpeta estática global:
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # O la ruta específica de tu carpeta estática global
+]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
