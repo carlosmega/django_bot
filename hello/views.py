@@ -14,9 +14,14 @@ logger = logging.getLogger('myapp')  # Reemplaza 'myapp' con el nombre de tu apl
 def get_qr_code(request):
     phone_number = "+528130733175"
     message = "Hola, este es un mensaje de prueba."
+    browser = None
     with sync_playwright() as p:
         try:
-            browser = p.firefox.launch_persistent_context(user_data_dir='ws_data', headless=False)
+            browser = p.firefox.launch_persistent_context(
+                user_data_dir='ws_data',
+                headless=False,
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
+            )
             page = browser.new_page()
             whatsapp_url = "https://web.whatsapp.com/"
             logger.info(f"Navegando a la URL de WhatsApp: {whatsapp_url}")
