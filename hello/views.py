@@ -16,7 +16,7 @@ def get_qr_code(request):
     message = "Hola, este es un mensaje de prueba."
     with sync_playwright() as p:
         try:
-            browser = p.firefox.launch_persistent_context(user_data_dir='ws_data', headless=True)
+            browser = p.firefox.launch_persistent_context(user_data_dir='ws_data', headless=False)
             page = browser.new_page()
             whatsapp_url = "https://web.whatsapp.com/"
             logger.info(f"Navegando a la URL de WhatsApp: {whatsapp_url}")
