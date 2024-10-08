@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Value</title>
+</head>
+<body>
+    <h1>Input Value</h1>
+    {% if get_code_ws %}
+        <p>El valor del input es: {{ get_code_ws }}</p>
+    {% else %}
+        <p>No se pudo obtener el valor del input.</p>
+    {% endif %}
+</body>
+</html>

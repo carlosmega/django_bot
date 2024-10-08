@@ -1,0 +1,10 @@
+<div id="logs"></div>
+
+<script>
+    const eventSource = new EventSource('/ruta-de-la-vista/');
+    
+    eventSource.onmessage = function(event) {
+        const logElement = document.getElementById('logs');
+        logElement.innerHTML += event.data + '<br>';
+    };
+</script>

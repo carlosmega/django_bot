@@ -146,10 +146,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
-        'myapp': {  # Reemplaza 'myapp' con el nombre de tu aplicación
+        'hello': {  # Reemplaza 'myapp' con el nombre de tu aplicación
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }
