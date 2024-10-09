@@ -18,16 +18,16 @@ from django.contrib import admin
 from django.urls import path
 
 
-from hello.views import  hola_mundo, send_whatsapp_message
+from hello.views import  hola_mundo, get_qr_code
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', hola_mundo, name='hola_mundo'),
     #path('send-whatsapp/', trigger_send_whatsapp_message, name='send_whatsapp'),
-    #path('get-qr-code/', get_qr_code, name='get_qr_code'),
+    path('get-qr-code/', get_qr_code, name='get_qr_code'),
     #path('show_input_value/<str:input_value>/', show_input_value, name='show_input_value'),
     #path('logs/', logsView, name='logs'),
-    path('send_whatsapp/', send_whatsapp_message, name='send_whatsapp_message'),
+    #path('send_whatsapp/', send_whatsapp_message, name='send_whatsapp_message'),
 
     
 ]

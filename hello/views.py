@@ -3,22 +3,19 @@
 
 #from django.http import HttpResponse
 from django.shortcuts import redirect, render
-#import logging
-from django.urls import reverse
-#from playwright.sync_api import sync_playwright
-#from playwright.async_api import async_playwright
+import logging
+
+from playwright.sync_api import sync_playwright
+
 import time
-from django.http import StreamingHttpResponse
-from django.http import HttpResponseBadRequest
-import pywhatkit
+
 
 from datetime import datetime
 
 #Configurar el logger
-#logger = logging.getLogger('hello')  # Reemplaza 'myapp' con el nombre de tu aplicación
+logger = logging.getLogger('hello')  # Reemplaza 'myapp' con el nombre de tu aplicación
 
 
-"""
 def get_qr_code(request):
     phone_number = "+528130733175"
     message = "Hola, este es un mensaje de prueba."
@@ -29,8 +26,8 @@ def get_qr_code(request):
         try:
             browser = p.firefox.launch_persistent_context(
                 user_data_dir='ws_data',
-                headless=True,
-                #user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
+                headless=False,
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
             )
             page = browser.new_page()
             whatsapp_url = "https://web.whatsapp.com/"
@@ -51,7 +48,7 @@ def get_qr_code(request):
             except:
                 logger.info("No autenticado en WhatsApp")
                 # Función B: No autenticado
-                authenticate_whatsapp(page)
+                authenticate_whatsapp_qr(page)
                 
                 logger.info("--------Terminando ----------")
             
@@ -90,7 +87,8 @@ def send_message(page, phone_number, message):
 
         logger.info("Mensaje enviado y etiqueta detectada.")
     except Exception as e:
-        logger.error(f"Error al enviar el mensaje: {e}")c
+        logger.error(f"Error al enviar el mensaje: {e}")
+    return None
 
 
 def authenticate_whatsapp(page):
@@ -168,9 +166,27 @@ def authenticate_whatsapp(page):
     except Exception as e:
         logger.error(f"------ 1/9 --- Error durante la autenticación en la función inside_whatsapp: {e}")
         return None
+    
 
+def authenticate_whatsapp_qr(page):
+    try:
+        logger.info(" -------- Inicio Esperando autenticación QR ----------- ")
+        
+        # Navegar a WhatsApp Web
+        page.goto("https://web.whatsapp.com/")
+        
+        # Esperar a que el div con la clase _aj-e esté presente
+        page.wait_for_selector("div._aj-e", timeout=10000)
+        time.sleep(8)
+        # Buscar el span con role="button" y clase x1n68mz9 dentro del div con clase _aj-e
+        span_selector = "span.x1n68mz9"
+        span_element = page.query_selector(span_selector)
+        #span_element.click()
+        
+    except Exception as e:
+        logger.error(f"------ 1/9 --- Error durante la autenticación en la función inside_whatsapp: {e}")
+        return None
 
-"""
 
 
 def hola_mundo(request):
@@ -178,28 +194,3 @@ def hola_mundo(request):
         'mensaje': 'Hola Mundo!'
     }
     return render(request, 'main.html', context)
-
-
-def send_whatsapp_message(request):
-    #phone_number = request.GET.get('phone_number')
-    #message = request.GET.get('message')
-
-
-    phone_number = "+528130733175"
-    message = "Hola, este es un mecdfsac nsaje de prueba."
-
-    # Obtener la hora y minuto actuales
-    now = datetime.now()
-    hour = now.hour
-    minute = now.minute + 2
-
-    print(f"Enviando mensaje a {phone_number} a las {hour}:{minute}")
-
-    try:
-        # Enviar el mensaje instantáneamente
-        pywhatkit.sendwhatmsg(phone_number, message, hour, minute, wait_time=20, tab_close=False, close_time=10)
-        print("Mensaje enviado exitoscdfsacdsac fvfdsa dsamente.")
-    except Exception as e:
-        print(f"Error al enviar el mensaje: {e}")
-    
-    return render(request, 'main.html')
