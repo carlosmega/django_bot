@@ -1,19 +1,24 @@
 
-from asyncio.log import logger
+#from asyncio.log import logger
 
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from django.shortcuts import redirect, render
-import logging
+#import logging
 from django.urls import reverse
-from playwright.sync_api import sync_playwright
-from playwright.async_api import async_playwright
+#from playwright.sync_api import sync_playwright
+#from playwright.async_api import async_playwright
 import time
 from django.http import StreamingHttpResponse
+from django.http import HttpResponseBadRequest
+import pywhatkit
+
+from datetime import datetime
 
 #Configurar el logger
-logger = logging.getLogger('hello')  # Reemplaza 'myapp' con el nombre de tu aplicación
+#logger = logging.getLogger('hello')  # Reemplaza 'myapp' con el nombre de tu aplicación
 
 
+"""
 def get_qr_code(request):
     phone_number = "+528130733175"
     message = "Hola, este es un mensaje de prueba."
@@ -46,7 +51,7 @@ def get_qr_code(request):
             except:
                 logger.info("No autenticado en WhatsApp")
                 # Función B: No autenticado
-                spanSelector = authenticate_whatsapp(page)
+                authenticate_whatsapp(page)
                 
                 logger.info("--------Terminando ----------")
             
@@ -72,11 +77,8 @@ def send_message(page, phone_number, message):
         time.sleep(10)
         
         # Tomar una captura de pantalla antes de presionar "Enter"
-        screenshot_path = "before_enter_screenshot.png"
-        page.screenshot(path=screenshot_path)
         logger.info(f"Captura de pantalla tomada antes de presionar Enter: {screenshot_path}")
-        
-        
+                
         # Simular la acción de presionar "Enter"
         page.keyboard.press("Enter")
         logger.info("Presionando Enter para enviar el mensaje")
@@ -88,89 +90,8 @@ def send_message(page, phone_number, message):
 
         logger.info("Mensaje enviado y etiqueta detectada.")
     except Exception as e:
-        logger.error(f"Error al enviar el mensaje: {e}")
+        logger.error(f"Error al enviar el mensaje: {e}")c
 
-
-def authenticate_and_send_message(page):
-    try:
-        logger.info("Esperando autenticación del usuario")
-        
-        # Esperar a que el usuario se autentique manualmente
-        page.goto("https://web.whatsapp.com/")  # Reemplaza con la URL correcta
-
-        # Esperar a que el div con la clase _aj-e esté presente
-        page.wait_for_selector("div._aj-e", timeout=10000)
-        #time.sleep(8)
-        # Buscar el span con role="button" y clase x1n68mz9 dentro del div con clase _aj-e
-        span_selector = "span.x1n68mz9"
-        span_element = page.query_selector(span_selector)
-        span_element.click()
-        if span_element:
-            print("Span encontrado")
-            span_element_number = page.query_selector("span.x19co3pv")
-            page.wait_for_selector("span.x19co3pv", timeout=30000)
-            pan_text = span_element_number.text_content()
-            #time.sleep(10)
-            print(pan_text)
-
-            input_selector = 'input[dir="ltr"]'
-            page.wait_for_selector(input_selector, timeout=30000)
-
-            input_element_number = page.query_selector(input_selector)
-
-            if input_element_number:
-                
-                print("Input con dir='ltr' encontrado")
-                #time.sleep(5)
-                # Puedes realizar más acciones con el input aquí, por ejemplo, llenarlo con texto
-                input_element_number.fill("+52 81 8075 1211")
-
-                button_selector = "button.x889kno.x1a8lsjc.xbbxn1n.xxbr6pl.x1n2onr6.x1rg5ohu.xk50ysn.x1f6kntn.xyesn5m.x1z11no5.xjy5m1g.x1mnwbp6.x4pb5v6.x178xt8z.xm81vs4.xso031l.xy80clv.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x1v8p93f.xogb00i.x16stqrj.x1ftr3km.x1hl8ikr.xfagghw.x9dyr19.x9lcvmn.xbtce8p.x14v0smp.xo8ufso.xcjl5na.x1k3x3db.xuxw1ft.xv52azi"
-
-                button_element = page.query_selector(button_selector)
-                if button_element:
-                    button_element.click()
-                    print("Botón con clase x889kno clicado")
-                    
-                    div_selector = 'div[data-link-code]'
-                    #time.sleep(2)
-                    page.wait_for_selector(div_selector, timeout=30000)
-                    #page.screenshot(path="static/get_code.png")
-                    div_element = page.query_selector(div_selector)
-                    
-                    if div_element:
-
-                        get_code_ws = div_element.get_attribute('data-link-code')
-                        logger.info(f"Valor del atributo data-link-code: {get_code_ws}")
-
-                        data_link_code_value = div_element.get_attribute('data-link-co  de')  
-                           
-                        print(f"Valor del atributo data-link-code: {data_link_code_value}")
-                        #time.sleep(10)
-                        html_element_wp = page.query_selector("div._aigv._aigw")
-                        if html_element_wp:
-                            page.wait_for_selector("div._aigv._aigw", timeout=10000)
-                            print("Etiqueta <html> con id 'whatsapp-web' detectada.")
-                        else:
-                            print("Etiqueta <html> con id 'whatsapp-web' no encontrada.")
-                    else:
-                        print("Div con atributo data-link-code no encontrado")                          
-                else:
-                    print("Botón con clase x889kno no encontrado")
-            else:
-                print("Input con dir='ltr' no encontrado")      
-            time.sleep(3)
-            print(pan_text)
-            print("terminando el span")
-        else:
-            print("Span no encontrado")
-
-        logger.info("Autenticación comp<letada, enviando mensaje")
-        #send_message(page, phone_number, message)
-    except Exception as e:
-        logger.error(f"Error durante la autenticación: {e}")
-    return "Finish"
-# Create your views here.
 
 def authenticate_whatsapp(page):
     try:
@@ -249,19 +170,7 @@ def authenticate_whatsapp(page):
         return None
 
 
-def get_code(page, div_element):
-    logger.info("funcion get code")
-    time.sleep(10)
-    get_code_ws = div_element.get_attribute('data-link-code')
-    logger.info(f"Valor del atributo data-link-code: {get_code_ws}")
-    
-    html_element_wp = page.query_selector("div._aigv._aigw")
-    if html_element_wp:
-        page.wait_for_selector("div._aigv._aigw", timeout=10000)
-        print("Etiqueta <html> con id 'whatsapp-web' detectada.")
-    else:
-        print("Etiqueta <html> con id 'whatsapp-web' no encontrada.")
-    return get_code_ws
+"""
 
 
 def hola_mundo(request):
@@ -269,3 +178,28 @@ def hola_mundo(request):
         'mensaje': 'Hola Mundo!'
     }
     return render(request, 'main.html', context)
+
+
+def send_whatsapp_message(request):
+    #phone_number = request.GET.get('phone_number')
+    #message = request.GET.get('message')
+
+
+    phone_number = "+528130733175"
+    message = "Hola, este es un mecdfsac nsaje de prueba."
+
+    # Obtener la hora y minuto actuales
+    now = datetime.now()
+    hour = now.hour
+    minute = now.minute + 2
+
+    print(f"Enviando mensaje a {phone_number} a las {hour}:{minute}")
+
+    try:
+        # Enviar el mensaje instantáneamente
+        pywhatkit.sendwhatmsg(phone_number, message, hour, minute, wait_time=20, tab_close=False, close_time=10)
+        print("Mensaje enviado exitoscdfsacdsac fvfdsa dsamente.")
+    except Exception as e:
+        print(f"Error al enviar el mensaje: {e}")
+    
+    return render(request, 'main.html')
